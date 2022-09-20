@@ -10,3 +10,7 @@ Humans: [UK biobank](https://www.ukbiobank.ac.uk/) (fingers crossed, awaiting ap
 
 ## Structure of the repository
 TBD
+
+## Participants
+@dgmets <br>
+@ryanayork
