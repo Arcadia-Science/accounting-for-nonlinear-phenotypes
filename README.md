@@ -5,7 +5,7 @@ This repository contains code for exploring the role of nonlinear phenotypic int
 
 ## Datasets explored
 [DGRP](http://dgrp2.gnets.ncsu.edu/)
-[JAX] (http://https://www.jax.org/)
+[JAX](http://https://www.jax.org/)
 UK biobank (fingers crossed)
 
 ## Structure of the repository
