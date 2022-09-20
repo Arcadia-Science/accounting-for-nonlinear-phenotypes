@@ -8,6 +8,8 @@ Fruit flies: [DGRP](http://dgrp2.gnets.ncsu.edu/) <br>
 Mice: [JAX](http://https://www.jax.org/) <br>
 Humans: [UK biobank](https://www.ukbiobank.ac.uk/) (fingers crossed, awaiting approval)
 
+available on [S3](arn:aws:s3:::arcadia-public-genetic-mapping-datasets)
+
 ## Structure of the repository
 TBD
 
