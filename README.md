@@ -4,8 +4,8 @@
 This repository contains code for exploring the role of nonlinear phenotypic interactions in genetic mapping studies. 
 
 ## Datasets explored
-Fruit flies: [DGRP](http://dgrp2.gnets.ncsu.edu/) <br>
-Mice: [JAX](http://https://www.jax.org/) <br>
+Fruit flies: [DGRP](https://dgrp2.gnets.ncsu.edu/) <br>
+Mice: [JAX](https://www.jax.org/) <br>
 Humans: [UK biobank](https://www.ukbiobank.ac.uk/) (fingers crossed, awaiting approval)
 
 Available on [S3](https://arcadia-public-genetic-mapping-datasets.s3.us-west-1.amazonaws.com/dgrp_phenotypes/)
