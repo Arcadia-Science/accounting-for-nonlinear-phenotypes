@@ -4,7 +4,7 @@ import numpy as np
 
 def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=None):
  '''a simple tool for generating phenotypic and genetic data.  Currently,
- the genetic model is purely additive. 
+ the genetic model is purely additive and independent.
  n_as is the number of allelic states at all segregating loci
  n_loci is the number of segregating loci in the analysis
  n_loci_ip is the number of loci influencing the phenotype'''
@@ -19,15 +19,16 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  for n in range(n_loci_ip):
   loci_that_matter[np.random.randint(n_loci)]=1
 
- weights=np.zeros((n_loci,n_as))
+ weights=np.zeros((n_phens,n_loci,n_as))
  for n in range(n_loci_ip):
-  weights[np.random.randint(n_loci)]=np.random.rand(n_as)
+  for m in range(n_phens):
+   weights[m][np.random.randint(n_loci)]=np.random.rand(n_as)
 
  genotypes,gen_locs=zip(*[make_genotype_ind(n_as,n_loci) for x in range(n_animals)])
 
  phens=[]
  for n in range(n_phens):
-  phens.append(np.sum(genotypes*weights,axis=(2,1))/n_loci)
+  phens.append(np.sum(genotypes*weights[n],axis=(2,1))/n_loci)
 
  return genotypes,gen_locs,phens
 
