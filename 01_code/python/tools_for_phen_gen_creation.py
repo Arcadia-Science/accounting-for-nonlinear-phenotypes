@@ -15,9 +15,6 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  if n_animals==None: n_animals=500 
  if n_phens==None: n_phens=1
 
- loci_that_matter=np.zeros(n_loci)
- for n in range(n_loci_ip):
-  loci_that_matter[np.random.randint(n_loci)]=1
 
  weights=np.zeros((n_phens,n_loci,n_as))
  for n in range(n_loci_ip):
@@ -30,7 +27,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  for n in range(n_phens):
   phens.append(np.sum(genotypes*weights[n],axis=(2,1))/n_loci)
 
- return genotypes,gen_locs,phens
+ return genotypes,gen_locs,weights,phens
 
 def make_genotype_ind(n_as,n_loci):
  '''utlity function for make_genotype.  Creates a random set of genotypes
