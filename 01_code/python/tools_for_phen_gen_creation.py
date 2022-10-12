@@ -5,7 +5,10 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
 
  '''a simple tool for generating phenotypic and genetic data.  Currently, this 
  allows for the addition of non-linear gene-gene interactions, but the model is limited.
- An allele of a gene can only interact with one other allele of another gene.
+ An allele of a gene can only interact with one other allele of another gene. This now
+ allows for pleiotropy.  For any individual gene known to influence a phenotype, there is a 
+ p_pleio probability that it will also influence any other individual phenotype.  The degree
+ of influence is random.
  n_as is the number of allelic states at all segregating loci
  n_loci is the number of segregating loci in the analysis
  n_loci_ip is the number of loci influencing the phenotype'''
