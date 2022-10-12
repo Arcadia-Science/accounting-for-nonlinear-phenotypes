@@ -23,9 +23,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
 
  genotypes,gen_locs=zip(*[make_genotype_ind(n_as,n_loci) for x in range(n_animals)])
 
- '''weighted_gens=[]
- for n in range(n_phens):
-  weighted_gens.append(genotypes*weights[n])'''
+
 
  inds=[[n for n in range(len(weights[0])) if sum(weights[y][n])>0] for y in range(n_phens)]
  
@@ -38,7 +36,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
     if np.random.binomial(1,p_interact):
      ind_1=inds[n][m]
      ind_2=inds[n][z]
-     if ind_1 and ind_2 not in interacting_loci:
+     if ind_1 not in interacting_loci and ind_2 not in interacting_loci:
       interacting_loci.append(ind_1)
       interacting_loci.append(ind_2)
       allele=np.random.randint(3)
