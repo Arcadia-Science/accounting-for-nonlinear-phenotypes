@@ -39,7 +39,8 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
   for n in list(range(0,m))+list(range(m+1,n_phens)):
    for z in inds[m]:
     if np.random.binomial(1,p_pleio):
-     weights[n][z]=np.random.rand(n_as)*10
+     #weights[n][z]=np.random.rand(n_as)*10
+     weights[n][z]=weights[m][z]
      gens_mat.append([m,n,z])
   pleiotropy_mat.append(gens_mat)
 
