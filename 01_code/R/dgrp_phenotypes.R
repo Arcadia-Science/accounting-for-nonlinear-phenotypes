@@ -1,13 +1,5 @@
-library(RColorBrewer)
-library(gplots)
-library(missMDA)
-library(FactoMineR)
-library(RNOmni)
-library(umap)
-library(energy)
-library(mgcv)
-library(lmtest)
-library(scales)
+setwd('~/Documents/Research/github/accounting-for-nonlinear-phenotypes/')
+source('01_code/R/nonlinear_phenotype_utils.R')
 
 ##############################################################
 #####Various pre-processing (just needed to be done once)#####
