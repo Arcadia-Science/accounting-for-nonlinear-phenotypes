@@ -179,3 +179,19 @@ distribution_linearity_test_independent = function(n_reps = 10,
   #Return
   return(linear_nonlinear)
 }
+
+#Examples
+poisson = distribution_linearity_test_independent(distribution = 'poisson', n_phenotypes = 20, n_samples = 1000)
+gaussian = distribution_linearity_test_independent(distribution = 'gaussian', n_phenotypes = 20, n_samples = 1000)
+uniform = distribution_linearity_test_independent(distribution = 'uniform', n_phenotypes = 20, n_samples = 1000)
+
+#Plot
+linear = lapply(poisson, function(x) x$linear)
+nonlinear = lapply(poisson, function(x) x$nonlinear)
+
+barplot(c(linear, nonlinear),
+        ylab = 'Proportion',
+        ylim = c(0,1),
+        cex.axis = 1.5, cex.lab = 1.5, cex.names = 1.5,
+        names = c('linear', 'nonlinear'),
+        las = 2)
