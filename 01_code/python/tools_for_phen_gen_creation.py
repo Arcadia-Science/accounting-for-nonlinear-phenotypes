@@ -97,3 +97,5 @@ def make_genotype_ind(n_as,n_loci):
   gen[n][loc]=1
   locs.append(loc)
  return gen,locs
+
+
