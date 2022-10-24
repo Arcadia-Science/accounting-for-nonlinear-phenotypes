@@ -22,14 +22,18 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  if p_pleio==None: p_pleio=0.1
 
  #make weights for genotypes
+ inds=list(np.zeros((n_phens,n_loci_ip),dtype=int))
  weights=np.zeros((n_phens,n_loci,n_as))
  for n in range(n_loci_ip):
   for m in range(n_phens):
-   weights[m][np.random.randint(n_loci)]=np.random.rand(n_as)*10
+   ind=int(np.random.randint(n_loci))
+   weights[m][ind]=np.random.rand(n_as)*10
+   inds[m][n]=int(ind)
+   #weights[m][np.random.randint(n_loci)]=np.random.rand(n_as)*10
 
  #make indices for locations in the genome that influence a phenotype this is a slopy way of 
  #getting info from the previous simulator...
- inds=[[n for n in range(len(weights[0])) if sum(weights[y][n])>0] for y in range(n_phens)]
+ #inds=[[n for n in range(len(weights[0])) if sum(weights[y][n])>0] for y in range(n_phens)]
 
  #add pleiotropy.  For each locus where there is influence on any one phenotype, this 
  #will add an influence on each other phenotype with probability p_pleio
@@ -72,13 +76,13 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  #impose gene-gene interactions
  for n in range(n_phens):
   for m in range(n_animals):
-   for int in interact[n]:
-    loc_1=weighted_genes[n][m][int[0]][int[2]]
-    loc_2=weighted_genes[n][m][int[1]][int[2]]
+   for intr in interact[n]:
+    loc_1=weighted_genes[n][m][intr[0]][intr[2]]
+    loc_2=weighted_genes[n][m][intr[1]][intr[2]]
     if loc_1 !=0 and loc_2 !=0:
      new_weight=loc_1*loc_2
-     weighted_genes[n][m][int[0]][int[2]]=new_weight
-     weighted_genes[n][m][int[1]][int[2]]=0
+     weighted_genes[n][m][intr[0]][intr[2]]=new_weight
+     weighted_genes[n][m][intr[1]][intr[2]]=0
 
 
  #calculate individual phenotypes
