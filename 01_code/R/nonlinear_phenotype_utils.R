@@ -9,6 +9,7 @@ library(mgcv)
 library(lmtest)
 library(scales)
 library(reticulate)
+library(ArcadiaColorBrewer)
 np = import('numpy')
 
 ###################
@@ -72,20 +73,68 @@ compare_nonlinear = function(dat,
   }
   
   #Calculate proportions
-  x = unlist(lapply(res, function(x) x$lrtest$LogLik[1]-x$lrtest$LogLik[2]))
+  x = unlist(lapply(res, function(x) signif(x$lrtest$LogLik[1], 3)-signif(x$lrtest$LogLik[2], 3)))
   linear = sum(x>0)/length(x)
   nonlinear = sum(x<0)/length(x)
   
   #Return
   if(return_models == TRUE){
-    r = list(res, linear, nonlinear)
-    names(r) = c('models', 'linear', 'nonlinear')
+    r = list(res, x, linear, nonlinear)
+    names(r) = c('models', 'loglik_diffs', 'linear', 'nonlinear')
     return(r)
   }else{
     r = list(linear, nonlinear)
     names(r) = c('linear', 'nonlinear')
     return(r)
   }
+}
+
+#Function to compare linear vs. non-linear models for a phenotype matrix using MIC (maximal information content)
+compare_nonlinear_MIC = function(dat, 
+                                 verbose = FALSE){
+  
+  #Get all comparisons 
+  all = expand.grid(1:ncol(dat), 1:ncol(dat))
+  
+  #Get just unique combos
+  all = all[!all[,1] == all[,2],]
+  
+  #Remove reciprocal pairings
+  for(i in 1:nrow(all)){
+    all[i,] = sort(unlist(all[i,]))
+  }
+  all = all[-duplicated(all),]
+  
+  #Convert data to numeric matrix
+  z = data.matrix(dat)
+  
+  #Test linear vs. nonlinear models via AIC for all traits
+  res = list()
+  
+  if(verbose == TRUE){
+    
+    #Set progress bar
+    pb <- txtProgressBar(min = 1,      
+                         max = nrow(all), 
+                         style = 3,    
+                         width = 50,
+                         char = ".")
+  }
+  for(i in 1:nrow(all)){
+    
+    if(verbose == TRUE){
+      #Update progress bar
+      setTxtProgressBar(pb, i)
+    }
+    
+    mic = minerva::mine(z[,all[i,1]], 
+                        z[,all[i,2]])
+    
+    res[[as.character(i)]] = mic
+  }
+  
+  #Return
+  return(res)
 }
 
 #Function to run linearity test on independent random data
@@ -180,18 +229,18 @@ distribution_linearity_test_independent = function(n_reps = 10,
   return(linear_nonlinear)
 }
 
-#Examples
-poisson = distribution_linearity_test_independent(distribution = 'poisson', n_phenotypes = 20, n_samples = 1000)
-gaussian = distribution_linearity_test_independent(distribution = 'gaussian', n_phenotypes = 20, n_samples = 1000)
-uniform = distribution_linearity_test_independent(distribution = 'uniform', n_phenotypes = 20, n_samples = 1000)
-
-#Plot
-linear = lapply(poisson, function(x) x$linear)
-nonlinear = lapply(poisson, function(x) x$nonlinear)
-
-barplot(c(linear, nonlinear),
-        ylab = 'Proportion',
-        ylim = c(0,1),
-        cex.axis = 1.5, cex.lab = 1.5, cex.names = 1.5,
-        names = c('linear', 'nonlinear'),
-        las = 2)
+# #Examples
+# poisson = distribution_linearity_test_independent(distribution = 'poisson', n_phenotypes = 20, n_samples = 1000)
+# gaussian = distribution_linearity_test_independent(distribution = 'gaussian', n_phenotypes = 20, n_samples = 1000)
+# uniform = distribution_linearity_test_independent(distribution = 'uniform', n_phenotypes = 20, n_samples = 1000)
+# 
+# #Plot
+# linear = lapply(poisson, function(x) x$linear)
+# nonlinear = lapply(poisson, function(x) x$nonlinear)
+# 
+# barplot(c(linear, nonlinear),
+#         ylab = 'Proportion',
+#         ylim = c(0,1),
+#         cex.axis = 1.5, cex.lab = 1.5, cex.names = 1.5,
+#         names = c('linear', 'nonlinear'),
+#         las = 2)
