@@ -45,7 +45,7 @@ res = lapply(phenos, function(x){
 #####Sweeping number of important alleles; independent genotypes and phenotypes#####
 ####################################################################################
 #Sweep n of important alleles
-toTest = seq(0.9, 1, 0.01)
+toTest = seq(0, 1, 0.1)
 out = list()
 pb <- txtProgressBar(min = 1,      
                      max = length(toTest), 
@@ -55,14 +55,17 @@ pb <- txtProgressBar(min = 1,
 
 for(i in 1:length(toTest)){
   setTxtProgressBar(pb, i)
-  out[[as.character(toTest[i])]] = make_genotype(n_loci_ip = as.integer(100),
+  out[[as.character(toTest[i])]] = make_genotype(n_loci_ip = as.integer(30),
                                                  p_pleio = as.integer(toTest[i]),   
                                                  #n_loci = as.integer(100), 
-                                                 p_interact = as.integer(0.5),
+                                                 p_interact = as.integer(0),
                                                  n_phens = as.integer(10))}
 
 #Combine phenotypes
 phenos = lapply(out, function(x) do.call(cbind, x[[4]]))
+
+#Correlation of phenotypes
+
 
 #Compare linear vs. nonlinear
 counter <- 0
