@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env_vab=None, n_animals=None, n_phens=None, env_weight=None, p_interact=None, p_pleio=None):
+def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=None, n_phens=None, env_weight=None, p_interact=None, p_pleio=None, noise=None):
 
  '''a simple tool for generating phenotypic and genetic data.  Currently, this 
  allows for the addition of non-linear gene-gene interactions, but the model is limited.
@@ -17,12 +17,26 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env_vab=None, n_anima
  if n_loci==None: n_loci=3000
  if n_loci_ip==None: n_loci_ip=10
  if n_animals==None: n_animals=500 
- if n_phens==None: n_phens=1
+ if n_phens==None: n_phens=30
  if p_interact==None: p_interact=0.1
  if p_pleio==None: p_pleio=0.1
- if n_env_vab==None: n_env_vab=1
- if env_weight==None: env_weight=0.5
+ if n_env==None: n_env=2
+ if env_weight==None: env_weight=0.2
+ if noise==None: noise=0.1
 
+ out_dct={}
+ out_dct['n_as']=n_as
+ out_dct['n_loci']=n_loci
+ out_dct['n_loci_ip']=n_loci_ip
+ out_dct['n_animals']=n_animals
+ out_dct['n_phens']=n_phens
+ out_dct['p_interact']=p_interact
+ out_dct['p_pleio']=p_pleio
+ out_dct['n_env']=n_env
+ out_dct['env_weight']=env_weight
+ out_dct['noise']=noise
+
+ np.random.seed(47)
  #make weights for genotypes
  inds=list(np.zeros((n_phens,n_loci_ip),dtype=int))
  weights=np.zeros((n_phens,n_loci,n_as))
@@ -86,12 +100,43 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env_vab=None, n_anima
      weighted_genes[n][m][intr[0]][intr[2]]=new_weight
      weighted_genes[n][m][intr[1]][intr[2]]=0
 
-
  #calculate individual phenotypes
  phens=[]
  for n in range(n_phens):
   phens.append(np.sum(weighted_genes[n],axis=(2,1)))
- return genotypes,gen_locs,weights,phens,inds,interact,pleiotropy_mat
+
+ #add environmental effects
+ env_phens=phens
+ env_vects=np.random.rand(n_phens,n_env,n_animals)
+ for n in range(n_phens):
+  for m in range(n_env):
+   phen_vect=phens[n]
+   env_vect=env_vects[n][m]
+   out_phen=env_vect*(np.mean(phen_vect)/np.mean(env_vect))*env_weight #because this is done iteratively, this results in the first environmental variable having a lower contribution to the total variance than the last environmental variable
+   env_phens[n]=out_phen
+
+ #add noise
+ noise_vects=np.random.rand(n_phens,n_animals)
+ noisy_phens=[]
+ for n in range(n_phens):
+  phen_vect=env_phens[n]
+  noise_vect=noise_vects[n]
+  out_phens=noise_vect*(np.mean(phen_vect)/np.mean(noise_vect))*noise
+  noisy_phens.append(out_phens)
+ 
+ out_dct['genotypes']=genotypes
+ out_dct['gen_locs']=gen_locs
+ out_dct['weights']=weights
+ out_dct['phens']=phens
+ out_dct['noisy_phens']=noisy_phens
+ out_dct['env_phens']=env_phens 
+ out_dct['inds_of_loci_influencing_phen']=inds
+ out_dct['interact_matrix']=interact
+ out_dct['pleiotropy_matrix']=pleiotropy_mat
+
+ #return genotypes,gen_locs,weights,phens,inds,interact,pleiotropy_mat
+ return out_dct
+
 
 def make_genotype_ind(n_as,n_loci):
  '''utlity function for make_genotype.  Creates a random set of genotypes
