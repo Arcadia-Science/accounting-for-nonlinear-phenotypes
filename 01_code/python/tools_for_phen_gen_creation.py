@@ -1,14 +1,14 @@
 import numpy as np
 
 
-def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=None,p_interact=None,p_pleio=None):
+def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env_vab=None, n_animals=None, n_phens=None, env_weight=None, p_interact=None, p_pleio=None):
 
  '''a simple tool for generating phenotypic and genetic data.  Currently, this 
  allows for the addition of non-linear gene-gene interactions, but the model is limited.
  An allele of a gene can only interact with one other allele of another gene. This now
  allows for pleiotropy.  For any individual gene known to influence a phenotype, there is a 
  p_pleio probability that it will also influence any other individual phenotype.  The degree
- of influence is random.
+ of influence is set by p_pleio.
  n_as is the number of allelic states at all segregating loci
  n_loci is the number of segregating loci in the analysis
  n_loci_ip is the number of loci influencing the phenotype'''
@@ -20,6 +20,8 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  if n_phens==None: n_phens=1
  if p_interact==None: p_interact=0.1
  if p_pleio==None: p_pleio=0.1
+ if n_env_vab==None: n_env_vab=1
+ if env_weight==None: env_weight=0.5
 
  #make weights for genotypes
  inds=list(np.zeros((n_phens,n_loci_ip),dtype=int))
@@ -36,7 +38,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_animals=None,n_phens=
  #inds=[[n for n in range(len(weights[0])) if sum(weights[y][n])>0] for y in range(n_phens)]
 
  #add pleiotropy.  For each locus where there is influence on any one phenotype, this 
- #will add an influence on each other phenotype with probability p_pleio
+ #will add an influence on each other phenotype with probability p_pleio.
  pleiotropy_mat=[]
  for m in range(n_phens):
   gens_mat=[]
