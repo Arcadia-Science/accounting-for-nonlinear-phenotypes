@@ -41,11 +41,6 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  n_animals=int(n_animals*1.2)
  n_animals_test=n_animals-n_animals_train
 
- print(n_animals_train)
- print(n_animals)
- print(n_animals_test) 
-
-
  #set random seed
  np.random.seed(47)
 
@@ -143,10 +138,6 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  out_dct['pleiotropy_matrix']=pleiotropy_mat
 
  test_out_dct=out_dct.copy()
-
- print(n_animals_train)
- print(n_animals)
- print(n_animals_test)
 
  #append genetic data
  out_dct['genotypes']=genotypes[:n_animals_train]
