@@ -35,8 +35,20 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  out_dct['n_env']=n_env
  out_dct['env_weight']=env_weight
  out_dct['noise']=noise
+ 
+ #set up n_animals for test and train data sets
+ n_animals_train=n_animals  
+ n_animals=int(n_animals*1.2)
+ n_animals_test=n_animals-n_animals_train
 
+ print(n_animals_train)
+ print(n_animals)
+ print(n_animals_test) 
+
+
+ #set random seed
  np.random.seed(47)
+
  #make weights for genotypes
  inds=list(np.zeros((n_phens,n_loci_ip),dtype=int))
  weights=np.zeros((n_phens,n_loci,n_as))
@@ -124,18 +136,43 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
   out_phens=noise_vect*(np.mean(phen_vect)/np.mean(noise_vect))*noise
   noisy_phens.append(out_phens)
  
- out_dct['genotypes']=genotypes
- out_dct['gen_locs']=gen_locs
+ #format data for output
  out_dct['weights']=weights
- out_dct['phens']=phens
- out_dct['noisy_phens']=noisy_phens
- out_dct['env_phens']=env_phens 
  out_dct['inds_of_loci_influencing_phen']=inds
  out_dct['interact_matrix']=interact
  out_dct['pleiotropy_matrix']=pleiotropy_mat
 
+ test_out_dct=out_dct.copy()
+
+ print(n_animals_train)
+ print(n_animals)
+ print(n_animals_test)
+
+ #append genetic data
+ out_dct['genotypes']=genotypes[:n_animals_train]
+ out_dct['gen_locs']=gen_locs[:n_animals_train]
+
+ test_out_dct['n_animals']=n_animals_test
+ test_out_dct['genotypes']=genotypes[n_animals_train:]
+ test_out_dct['gen_locs']=gen_locs[n_animals_train:]
+
+ #re-structure phenotype data and append
+ phens=list(np.array(phens).T)
+ noisy_phens=list(np.array(noisy_phens).T)
+ env_phens=list(np.array(env_phens).T)
+
+ out_dct['phens']=phens[:n_animals_train]
+ out_dct['noisy_phens']=noisy_phens[:n_animals_train]
+ out_dct['env_phens']=env_phens[:n_animals_train]
+
+ test_out_dct['phens']=phens[n_animals_train:]
+ test_out_dct['noisy_phens']=noisy_phens[n_animals_train:]
+ test_out_dct['env_phens']=env_phens[n_animals_train:]
+
+ 
+
  #return genotypes,gen_locs,weights,phens,inds,interact,pleiotropy_mat
- return out_dct
+ return out_dct, test_out_dct
 
 
 def make_genotype_ind(n_as,n_loci):
