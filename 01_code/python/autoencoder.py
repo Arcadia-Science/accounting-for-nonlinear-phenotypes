@@ -13,6 +13,7 @@ import pickle as pk
 import time as tm
 import scipy as sc
 from scipy import stats
+from sklearn.metrics import mean_squared_error
 
 #parse commandline arguments
 args=ArgumentParser()
@@ -31,9 +32,7 @@ args.add_argument('--n_cpu', type=int, default=14, help='number of cpus')
 args.add_argument('--e_hidden_dim',type=int,default=32, help='number of neurons in the hidden layers of encoder')
 args.add_argument('--d_hidden_dim',type=int,default=32, help='number of neurons in the hidden layers of decoder')
 args.add_argument('--batchnorm_momentum',type=float, default=0.8, help='momentum for the batchnormalization layers')
-args.add_argument('--hidden_dim_dg', type=int, default=128, help='number of neurons in the hidden layers of the genetic descriminators')
-args.add_argument('--hidden_dim_de', type=int, default=30, help='number of neurons in the hidden layers of the descriminators')
-args.add_argument('--latent_dim', type=int, default=8, help='number of neurons in the latent space')
+args.add_argument('--latent_dim', type=int, default=32, help='number of neurons in the latent space')
 
 
 vabs=args.parse_args()
@@ -184,6 +183,7 @@ for n in range(num_epochs):
  print('Epoch num: '+str(n)+' batchno '+str(i)+' r_con_loss: '+str(rcon_loss[-1])+' epoch duration: '+str(cur_time))
 
 plt.plot(rcon_loss)
+plt.show()
 
 phen_encodings=[]
 phens=[]
@@ -212,3 +212,7 @@ plt.hist(cors,bins=20)
 plt.show()
 #plt.savefig(dataset_path+'phen_real_pred_pearsonsr.svg')
 #plt.close()
+
+errs=[mean_squared_error(phens[n],phen_encodings[n]) for n in range(len(phens))]
+plt.hist(errs,bins=20)
+plt.show()
