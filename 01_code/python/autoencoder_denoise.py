@@ -103,7 +103,7 @@ class Q_net(nn.Module):
   self.encoder = nn.Sequential(
    nn.Linear(in_features=phen_dim, out_features=N),
    nn.BatchNorm1d(N,momentum=batchnorm_momentum),
-   nn.LeakyReLU(0.2,inplace=True), 
+   nn.LeakyReLU(0.01,inplace=True), 
    nn.Linear(in_features=N, out_features=latent_dim),
    nn.Sigmoid()
   )
@@ -129,7 +129,7 @@ class P_net(nn.Module):
   self.decoder = nn.Sequential(
    nn.Linear(in_features=latent_dim, out_features=N),
    nn.BatchNorm1d(N,momentum=batchnorm_momentum),
-   nn.LeakyReLU(0.2), 
+   nn.LeakyReLU(0.01), 
    nn.Linear(in_features=N, out_features=out_phen_dim),
    nn.Sigmoid()
   )

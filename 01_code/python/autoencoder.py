@@ -25,14 +25,15 @@ args.add_argument('--gen_lw', type=float, default=1, help='weight for the loss a
 args.add_argument('--eng_lw', type=float, default=0.1, help='weight for the loss attributed to env features')
 args.add_argument('--n_epochs', type=int, default=100, help='number of epochs of training')
 args.add_argument('--batch_size', type=int, default=64, help='batch size')
-args.add_argument('--lr_r', type=float, default=0.001, help='reconstruction learning rate')
+args.add_argument('--lr_r', type=float, default=0.01, help='reconstruction learning rate')
 args.add_argument('--b1', type=float, default=0.5, help='adam: gradient decay variables')
 args.add_argument('--b2', type=float, default=0.999, help='adam: gradient decay variables')
 args.add_argument('--n_cpu', type=int, default=14, help='number of cpus')
-args.add_argument('--e_hidden_dim',type=int,default=32, help='number of neurons in the hidden layers of encoder')
-args.add_argument('--d_hidden_dim',type=int,default=32, help='number of neurons in the hidden layers of decoder')
+args.add_argument('--e_hidden_dim',type=int,default=64, help='number of neurons in the hidden layers of encoder')
+args.add_argument('--d_hidden_dim',type=int,default=64, help='number of neurons in the hidden layers of decoder')
 args.add_argument('--batchnorm_momentum',type=float, default=0.8, help='momentum for the batchnormalization layers')
 args.add_argument('--latent_dim', type=int, default=32, help='number of neurons in the latent space')
+args.add_argument('--n_phens_to_analyze', type=int, default=30, help='number of phenotypes to analyze')
 
 
 vabs=args.parse_args()
@@ -49,19 +50,20 @@ class phen_dataset(Dataset):
  indexes_of_loci_influencing_phen[n_phens,n_loci_ip] integer indicies of loci that influence a phenotype
  interaction_matrix[FILL THIS IN]
  pleiotropy_matrix[n_phens, n_phens, gen_index]'''
- def __init__(self,data_file):
+ def __init__(self,data_file,n_phens):
   self.datset = pk.load(open(data_file,'rb'))
   self.phens = [list((x/(1.5*max(x)))+1e-15) for x in self.datset['noisy_phens']]
   #self.phens = torch.sigmoid(torch.tensor(self.datset['noisy_phens'])) 
   self.genotypes = self.datset['genotypes']
   self.weights = self.datset['weights']
   self.data_file = data_file
+  self.n_phens=n_phens
 
  def __len__(self):
   return len(self.phens)
 
  def __getitem__(self,idx):
-  phenotypes=torch.tensor(self.phens[idx],dtype=torch.float32)
+  phenotypes=torch.tensor(self.phens[idx][:self.n_phens],dtype=torch.float32)
   genotype=torch.tensor(self.genotypes[idx],dtype=torch.float32)
   return phenotypes, genotype
 
@@ -71,8 +73,8 @@ transform = transforms.ToTensor()
 # load the training and test datasets
 dataset_path = '/home/dmets/git/arcadia-genotype-phenotype-map-nn/data/n_a_3000_nlip_30/'
 
-train_data = phen_dataset(dataset_path+'train.pk')
-test_data = phen_dataset(dataset_path+'test.pk')
+train_data = phen_dataset(dataset_path+'train.pk',n_phens=vabs.n_phens_to_analyze)
+test_data = phen_dataset(dataset_path+'test.pk',n_phens=vabs.n_phens_to_analyze)
 
 # setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -92,7 +94,7 @@ class Q_net(nn.Module):
  def __init__(self,phen_dim=None,N=None):
   super(Q_net,self).__init__()
   if N==None: N=vabs.e_hidden_dim
-  if phen_dim==None: phen_dim=vabs.n_phens
+  if phen_dim==None: phen_dim=vabs.n_phens_to_analyze
 
   batchnorm_momentum=vabs.batchnorm_momentum
   latent_dim=vabs.latent_dim
@@ -112,7 +114,7 @@ class Q_net(nn.Module):
 class P_net(nn.Module):
  def __init__(self,phen_dim=None,N=None):
   if N==None: N=vabs.d_hidden_dim
-  if phen_dim==None: phen_dim=vabs.n_phens
+  if phen_dim==None: phen_dim=vabs.n_phens_to_analyze
   
   n_env=vabs.n_env
   n_allelic_states=vabs.n_locs*vabs.n_alleles
@@ -157,9 +159,10 @@ num_epochs=vabs.n_epochs
 torch.manual_seed(10)
 
 #train
-rcon_loss=[]
+n_phens = vabs.n_phens_to_analyze
+rcon_loss = []
 
-start_time=tm.time()
+start_time = tm.time()
 
 for n in range(num_epochs):
  for i,(phens,gen) in enumerate(train_loader):
@@ -169,7 +172,8 @@ for n in range(num_epochs):
   #reconstruction loss
   P.zero_grad()
   Q.zero_grad()
-  
+   
+ 
   z_sample = Q(phens) 
   X_sample = P(z_sample)
   recon_loss = F.binary_cross_entropy(X_sample+EPS,phens+EPS)
@@ -208,11 +212,13 @@ plt.show()
 #plt.close()
 
 cors=[sc.stats.pearsonr(phens[n],phen_encodings[n])[0] for n in range(len(phens))]
+print(cors)
 plt.hist(cors,bins=20)
 plt.show()
 #plt.savefig(dataset_path+'phen_real_pred_pearsonsr.svg')
 #plt.close()
 
 errs=[mean_squared_error(phens[n],phen_encodings[n]) for n in range(len(phens))]
+print(errs)
 plt.hist(errs,bins=20)
 plt.show()
