@@ -1,7 +1,8 @@
 import numpy as np
+import copy as copy
+import pickle as pk
 
-
-def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=None, n_phens=None, env_weight=None, p_interact=None, p_pleio=None, noise=None):
+def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=None, n_phens=None, env_weight=None, p_interact=None, p_pleio=None, noise=None, downsample=None, n_loci_to_use=None):
 
  '''a simple tool for generating phenotypic and genetic data.  Currently, this 
  allows for the addition of non-linear gene-gene interactions, but the model is limited.
@@ -16,14 +17,17 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  if n_as==None: n_as=3
  if n_loci==None: n_loci=3000
  if n_loci_ip==None: n_loci_ip=10
- if n_animals==None: n_animals=500 
+ if n_animals==None: n_animals=600 
  if n_phens==None: n_phens=30
  if p_interact==None: p_interact=0.1
  if p_pleio==None: p_pleio=0.1
  if n_env==None: n_env=2
  if env_weight==None: env_weight=0.2
  if noise==None: noise=0.1
+ if downsample==None: downsample = False
+ if n_loci_to_use==None: n_loci_to_use=n_loci_ip
 
+ #make a dictionary for output and add all metadata
  out_dct={}
  out_dct['n_as']=n_as
  out_dct['n_loci']=n_loci
@@ -35,6 +39,8 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  out_dct['n_env']=n_env
  out_dct['env_weight']=env_weight
  out_dct['noise']=noise
+ out_dct['downsample']=downsample
+ out_dct['n_loci_to_use']=n_loci_to_use
  
  #set up n_animals for test and train data sets
  n_animals_train=n_animals  
@@ -45,14 +51,14 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  np.random.seed(47)
 
  #make weights for genotypes
- inds=list(np.zeros((n_phens,n_loci_ip),dtype=int))
+ inds=np.zeros((n_phens,n_loci_ip),dtype=int).tolist()
  weights=np.zeros((n_phens,n_loci,n_as))
  for n in range(n_loci_ip):
   for m in range(n_phens):
    ind=int(np.random.randint(n_loci))
    weights[m][ind]=np.random.rand(n_as)*10
    inds[m][n]=int(ind)
-   #weights[m][np.random.randint(n_loci)]=np.random.rand(n_as)*10
+ #inds=[list(set(x)) for x in inds] #remove redundancy from indices
 
  #make indices for locations in the genome that influence a phenotype this is a slopy way of 
  #getting info from the previous simulator...
@@ -60,6 +66,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
 
  #add pleiotropy.  For each locus where there is influence on any one phenotype, this 
  #will add an influence on each other phenotype with probability p_pleio.
+ all_inds=copy.deepcopy(inds)
  pleiotropy_mat=[]
  for m in range(n_phens):
   gens_mat=[]
@@ -68,8 +75,20 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
     if np.random.binomial(1,p_pleio):
      #weights[n][z]=np.random.rand(n_as)*10
      weights[n][z]=weights[m][z]
+     all_inds[n].append(z)
      gens_mat.append([m,n,z])
   pleiotropy_mat.append(gens_mat)
+
+ #reduce number of loci influencing a phenotype to the number stated in n_loci_ip even if there are pleiotropic effects
+ new_inds=list(range(30))
+ if downsample==True:
+  new_weights=np.zeros((n_phens,n_loci,n_as)).tolist()
+  for m in range(n_phens):
+   indss=np.random.choice(all_inds[m],n_loci_ip,replace=False)
+   new_inds[m]=indss
+   for ind in indss:
+    new_weights[m][ind] = weights[m][ind]
+  weights = np.array(new_weights)
 
  #make genotypes
  genotypes,gen_locs=zip(*[make_genotype_ind(n_as,n_loci) for x in range(n_animals)])
@@ -178,3 +197,10 @@ def make_genotype_ind(n_as,n_loci):
  return gen,locs
 
 
+def p_i_sweep(outpath):
+ incr=np.array(range(0,102,2))/100
+ for i in incr:
+  for f in incr:
+   train, test = make_genotype(downsample=True,p_pleio=i,p_interact=f)
+   pk.dump(train,open(outpath+'train_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
+   pk.dump(test,open(outpath+'test_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
