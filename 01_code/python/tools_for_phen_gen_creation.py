@@ -23,7 +23,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  if p_pleio==None: p_pleio=0.1
  if n_env==None: n_env=2
  if env_weight==None: env_weight=0.2
- if noise==None: noise=0.1
+ if noise==None: noise=0.01
  if downsample==None: downsample = False
  if n_loci_to_use==None: n_loci_to_use=n_loci_ip
 
@@ -132,23 +132,24 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
   phens.append(np.sum(weighted_genes[n],axis=(2,1)))
 
  #add environmental effects
- env_phens=phens
- env_vects=np.random.rand(n_phens,n_env,n_animals)
+ env_phens=copy.deepcopy(phens)
+ '''env_vects=np.random.rand(n_phens,n_env,n_animals)
  for n in range(n_phens):
   for m in range(n_env):
-   phen_vect=phens[n]
+   phen_vect=copy.deepcopy(phens[n])
    env_vect=env_vects[n][m]
    out_phen=env_vect*(np.mean(phen_vect)/np.mean(env_vect))*env_weight #because this is done iteratively, this results in the first environmental variable having a lower contribution to the total variance than the last environmental variable
-   env_phens[n]=out_phen
+   env_phens[n]=out_phen'''
 
  #add noise
  noise_vects=np.random.rand(n_phens,n_animals)
- noisy_phens=[]
- for n in range(n_phens):
-  phen_vect=env_phens[n]
+ noise_vects=noise_vects*(np.mean(env_phens)/np.mean(noise_vects))*noise
+ noisy_phens=phens+noise_vects
+ '''for n in range(n_phens):
+  phen_vect=copy.deepcopy(env_phens[n])
   noise_vect=noise_vects[n]
   out_phens=noise_vect*(np.mean(phen_vect)/np.mean(noise_vect))*noise
-  noisy_phens.append(out_phens)
+  noisy_phens.append(out_phens)'''
  
  #format data for output
  out_dct['weights']=weights
@@ -204,3 +205,12 @@ def p_i_sweep(outpath):
    train, test = make_genotype(downsample=True,p_pleio=i,p_interact=f)
    pk.dump(train,open(outpath+'train_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
    pk.dump(test,open(outpath+'test_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
+
+def convert_p_i_sweep(list_of_files):
+ out_phens=[]
+ incr=np.array(range(0,102,2))/100
+ for i in incr:
+  for f in incr:
+   filname=[x for x in list_of_files if 'pleio_'+str(i)+'_int_'+str(f) in x][0]
+   dat=pk.load(open(filname,'br'))
+   out_phens.append(dat['phens'])
