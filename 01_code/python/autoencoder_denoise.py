@@ -29,8 +29,8 @@ args.add_argument('--lr_r', type=float, default=0.01, help='reconstruction learn
 args.add_argument('--b1', type=float, default=0.5, help='adam: gradient decay variables')
 args.add_argument('--b2', type=float, default=0.999, help='adam: gradient decay variables')
 args.add_argument('--n_cpu', type=int, default=14, help='number of cpus')
-args.add_argument('--e_hidden_dim',type=int,default=256, help='number of neurons in the hidden layers of encoder')
-args.add_argument('--d_hidden_dim',type=int,default=256, help='number of neurons in the hidden layers of decoder')
+args.add_argument('--e_hidden_dim',type=int,default=1024, help='number of neurons in the hidden layers of encoder')
+args.add_argument('--d_hidden_dim',type=int,default=1024, help='number of neurons in the hidden layers of decoder')
 args.add_argument('--batchnorm_momentum',type=float, default=0.8, help='momentum for the batchnormalization layers')
 args.add_argument('--latent_dim', type=int, default=32, help='number of neurons in the latent space')
 args.add_argument('--n_phens_to_analyze', type=int, default=30, help='number of phenotypes to analyze')
@@ -73,7 +73,7 @@ class phen_dataset(Dataset):
 transform = transforms.ToTensor()
 
 # load the training and test datasets
-dataset_path = '/home/dmets/git/arcadia-genotype-phenotype-map-nn/data/n_a_3000_nlip_30/'
+dataset_path = '/home/dmets/git/arcadia-genotype-phenotype-map-nn/data/n_3000_nlp_30/'
 
 train_data = phen_dataset(dataset_path+'train.pk',n_phens=vabs.n_phens_to_analyze)
 test_data = phen_dataset(dataset_path+'test.pk',n_phens=vabs.n_phens_to_analyze)
