@@ -28,9 +28,9 @@ for(i in 1:length(phens)){
   }
 }
 
-###########################
-#####Calculate entropy#####
-###########################
+#######################################################
+#####Calculate entropy distributions for p_int = 0#####
+#######################################################
 #Entropy by data fraction
 p = split(phenos, p_int)
 
@@ -76,7 +76,7 @@ for(i in 1:length(p$int0)){
                                                         sample_sizes = seq(0.1, 0.9, 0.05))}
 
 #Plot
-layout(matrix(1:2,ncol=2), width = c(2,1),height = c(1,1))
+layout(matrix(1:3,ncol=3), width = c(2,1,2),height = c(1,1,1))
 
 cols = rev(colorRampPalette(RColorBrewer::brewer.pal(9, 'YlGnBu'))(length(all_entropies)))
 plot(colMeans(do.call(cbind, all_entropies[[1]]$entropies)), 
@@ -103,7 +103,7 @@ for(i in 1:length(all_entropies)){
   slopes = c(slopes, coef(lm(y~seq(1, length(y), 1)))[2])
 }
 
-plot(slopes, type = 'l')
+#plot(slopes, type = 'l')
 
 #Correlate slope and pleiotropy
 a = smooth.spline(seq(0, 1, 0.01),
@@ -112,8 +112,8 @@ a = smooth.spline(seq(0, 1, 0.01),
 plot(seq(0, 1, 0.01),
      slopes,
      pch = 20,
-     cex = 2,
-     col = alpha('gray50', 0.5),
+     cex = 3,
+     col = cols,
      cex.axis = 1.5,
      cex.lab = 1.5,
      xlab = 'Probability pleiotropy',
@@ -142,9 +142,51 @@ saveRDS(lapply(all_stats, function(x) x[1:7]), '~/Desktop/all_synthetic_phenos_a
 all_stats_int = split(lapply(all_stats, function(x) x[1:7]), p_int)
 all_stats_pleio = split(lapply(all_stats, function(x) x[1:7]), unlist(lapply(strsplit(names(all_stats), "_"), function(v){v[1]})))
 
-############################
-#####Plot distributions#####
-############################
+##########################################
+#####Plot non-linearity distributions#####
+##########################################
+#Smooth AIC ratios
+a_smooth = lapply(all_stats_int, function(x) {
+  z = unlist(lapply(x, function(y) y$nonlinearity_aic_ratios))
+  smooth.spline(1:length(z), z, spar = 0.75)$y
+})
+
+#Plot
+layout(matrix(1:3,ncol=3), width = c(2,1,2),height = c(1,1,1))
+
+cols = rev(colorRampPalette(RColorBrewer::brewer.pal(9, 'YlGnBu'))(length(a_smooth)))
+plot(a_smooth[[1]], 
+     type = 'l',
+     ylim = c(0, 1),
+     col = cols[1],
+     ylab = '% nonlinear',
+     xlab = 'Pleiotropy (probability)',
+     cex.axis = 1.5,
+     cex.lab = 1.5)
+abline(h = 0.5, lwd = 1.5, lty = 'dashed')
+for(i in 2:length(a_smooth)){
+  lines(a_smooth[[i]], col = cols[i])
+}
+lines(a_smooth[[1]], lwd = 2, col = cols[1])
+
+legend_image <- as.raster(matrix(cols, ncol=1))
+plot(c(0,2),c(0,1),type = 'n', axes = F,xlab = '', ylab = '', main = 'P (gene interaction)', font.main = 1)
+text(x=1.5, y = rev(seq(0,1,l=5)), labels = seq(0,1,l=5), pos = 1)
+rasterImage(legend_image, 0, 0, 1,1)
+
+#Plot entropy and non-linearity
+slopes = unlist(lapply(all_stats_int, function(x) lapply(x, function(y) y$subsampled_entropy_slopes)))
+
+cols = rev(colorRampPalette(RColorBrewer::brewer.pal(9, 'YlGnBu'))(length(unlist(a_smooth))))
+plot(unlist(a_smooth),
+     unlist(slopes),
+     xlab = '% nonlinear',
+     ylab = 'Entropy fit (slope)',
+     cex.lab = 1.5,
+     cex.axis = 1.5,
+     cex = 0.75,
+     pch = 20,
+     col = cols)
 
 ##############################################
 #####Entropy and non-linearity landscapes#####
@@ -197,12 +239,12 @@ vis.gam(m,
 h = unlist(lapply(all_stats, function(x) x$subsampled_entropy_slopes))
 m = gam(h ~ s(x, y, k=30))
 fit <- predict(m)
-vis.gam(m, 
+myvis.gam(m, 
         se=F,
         xlab = 'Prob pleiotropy',
         ylab = 'Prob gene interactions',
         plot.type = "contour",
-        color = 'topo', 
+        color = 'ylgnbu', 
         cex.lab = 1.5,
         cex.axis = 1.5,
         main = 'Entropy',
@@ -210,12 +252,12 @@ vis.gam(m,
         cex.main = 1.5,
         type="response") 
 
-vis.gam(m, 
+myvis.gam(m, 
         se=F,
         xlab = 'Prob pleiotropy',
         ylab = 'Prob gene interactions',
         plot.type = "persp",
-        color = 'topo',
+        color = 'ylgnbu',
         cex.lab = 1.5,
         cex.axis = 1.5,
         main = '',
@@ -293,7 +335,6 @@ vis.gam(m,
         phi=40,
         nCol = 100,
         type="response") 
-
 
 ############################
 #####Mutual information#####
