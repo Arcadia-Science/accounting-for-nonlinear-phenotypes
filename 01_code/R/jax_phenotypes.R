@@ -74,6 +74,9 @@ plot(u$layout,
      cex.axis = 1.5,
      cex.lab = 1.5)
 
+#Save 
+saveRDS(phenos_s, '02_output/jax_cleaned_phenos.RDS')
+
 #############################################################
 #####Testing linear vs. non-linear components via models#####
 #############################################################
@@ -82,7 +85,6 @@ all = expand.grid(1:ncol(phenos_s), 1:ncol(phenos_s))
 
 #Convert data to numeric matrix
 z = data.matrix(phenos_s)
-
 
 #Test linear vs. nonlinear models via AIC for all traits
 res = list()
