@@ -80,7 +80,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
   pleiotropy_mat.append(gens_mat)
 
  #reduce number of loci influencing a phenotype to the number stated in n_loci_ip even if there are pleiotropic effects
- new_inds=list(range(30))
+ new_inds=list(range(n_phens))
  if downsample==True:
   new_weights=np.zeros((n_phens,n_loci,n_as)).tolist()
   for m in range(n_phens):
@@ -89,7 +89,7 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
    for ind in indss:
     new_weights[m][ind] = weights[m][ind]
   weights = np.array(new_weights)
-
+  inds=np.array(new_inds)
  #make genotypes
  genotypes,gen_locs=zip(*[make_genotype_ind(n_as,n_loci) for x in range(n_animals)])
 
@@ -145,11 +145,6 @@ def make_genotype(n_as=None,n_loci=None, n_loci_ip=None, n_env=None, n_animals=N
  noise_vects=np.random.rand(n_phens,n_animals)
  noise_vects=noise_vects*(np.mean(env_phens)/np.mean(noise_vects))*noise
  noisy_phens=phens+noise_vects
- '''for n in range(n_phens):
-  phen_vect=copy.deepcopy(env_phens[n])
-  noise_vect=noise_vects[n]
-  out_phens=noise_vect*(np.mean(phen_vect)/np.mean(noise_vect))*noise
-  noisy_phens.append(out_phens)'''
  
  #format data for output
  out_dct['weights']=weights
@@ -199,10 +194,10 @@ def make_genotype_ind(n_as,n_loci):
 
 
 def p_i_sweep(outpath):
- incr=np.array(range(0,102,2))/100
+ incr=np.array(range(0,11,1))/10
  for i in incr:
   for f in incr:
-   train, test = make_genotype(downsample=True,p_pleio=i,p_interact=f)
+   train, test = make_genotype(downsample=True,p_pleio=i,p_interact=f,n_animals=3000,noise=0)
    pk.dump(train,open(outpath+'train_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
    pk.dump(test,open(outpath+'test_pleio_'+str(i)+'_int_'+str(f)+'.pk','wb'))
 
@@ -210,7 +205,9 @@ def convert_p_i_sweep(list_of_files):
  out_phens=[]
  incr=np.array(range(0,102,2))/100
  for i in incr:
+  int_inc=[]
   for f in incr:
    filname=[x for x in list_of_files if 'pleio_'+str(i)+'_int_'+str(f) in x][0]
    dat=pk.load(open(filname,'br'))
-   out_phens.append(dat['phens'])
+   int_inc.append(dat['phens'])
+  out_phens.append(int_inc)
