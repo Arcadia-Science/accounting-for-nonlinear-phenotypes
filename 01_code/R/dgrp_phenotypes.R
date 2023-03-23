@@ -182,12 +182,12 @@ write.csv(tmp, '02_output/all_dgrp_phenotypes_091222.csv')
 #####PCA etc.#####
 ##################
 #Read in
-n = readLines('02_output/all_dgrp_phenotypes_091222.csv', n = 1)
+n = readLines('02_output/all_dgrp_phenotypes.csv', n = 1)
 n = lapply(strsplit(n, ','), function(x) substring(x, 2))
 n = lapply(n, function(x) substr(x, 1, nchar(x)-1))
 n = unlist(n)[-1]
 
-dgrp = as.data.frame(data.matrix(read.csv('02_output/all_dgrp_phenotypes_091222.csv',
+dgrp = as.data.frame(data.matrix(read.csv('02_output/all_dgrp_phenotypes.csv',
                                           row.names = 1)))
 colnames(dgrp) = n
 
@@ -245,6 +245,9 @@ y = seq(-2, -8, -0.25)
 for(i in 1:length(unique(s))){
   text(-1, y[i], unique(s)[i], cex = 0.5, col = unique(cols)[i])
 }
+
+#Save
+saveRDS(dgrp_s, '02_output/dgrp_cleaned_phenos.RDS')
 
 #############################################################
 #####Testing linear vs. non-linear components via models#####
