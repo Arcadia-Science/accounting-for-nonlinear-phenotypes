@@ -1,0 +1,2 @@
+TSV containing these columns::
+p_pleio p_int n_phens_predicted n_phens_analyzed average_mean_percent_error average_pearsonsr_real_pred pearsonsr_values mean_percent_error_values
