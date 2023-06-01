@@ -56,28 +56,49 @@ compare_nonlinear = function(dat,
                          width = 50,
                          char = ".")
     counter <- 0
+    
+    res = lapply(all, function(x){
+      
+      counter <<- counter + 1
+      setTxtProgressBar(pb, counter)
+      
+      mod1 = lm(z[,x[,1]]~z[,x[,2]])
+      if(length(unique(z[,x[,2]]))<=10){
+        mod2 = gam(z[,x[,1]]~s(z[,x[,2]],
+                               k = k))
+      }else{
+        mod2 = gam(z[,x[,1]]~s(z[,x[,2]]))
+        #k = 10))
+      }
+      
+      out = lrtest(mod1, mod2)
+      a = AIC(mod1, mod2)
+      
+      l = list(out, a)
+      names(l) = c('lrtest', 'AIC')
+      l
+    })
+  }else{
+    res = lapply(all, function(x){
+
+      mod1 = lm(z[,x[,1]]~z[,x[,2]])
+      if(length(unique(z[,x[,2]]))<=10){
+        mod2 = gam(z[,x[,1]]~s(z[,x[,2]],
+                               k = k))
+      }else{
+        mod2 = gam(z[,x[,1]]~s(z[,x[,2]]))
+        #k = 10))
+      }
+      
+      out = lrtest(mod1, mod2)
+      a = AIC(mod1, mod2)
+      
+      l = list(out, a)
+      names(l) = c('lrtest', 'AIC')
+      l
+    })
   }
-  res = lapply(all, function(x){
-
-    counter <<- counter + 1
-    setTxtProgressBar(pb, counter)
-
-    mod1 = lm(z[,x[,1]]~z[,x[,2]])
-    if(length(unique(z[,x[,2]]))<=10){
-      mod2 = gam(z[,x[,1]]~s(z[,x[,2]],
-                             k = k))
-    }else{
-      mod2 = gam(z[,x[,1]]~s(z[,x[,2]]))
-                             #k = 10))
-    }
-
-    out = lrtest(mod1, mod2)
-    a = AIC(mod1, mod2)
-
-    l = list(out, a)
-    names(l) = c('lrtest', 'AIC')
-    l
-  })
+  
 
   # #For loop version
   # res = list()
@@ -145,16 +166,32 @@ aic.ratios = function(data){
 #Function to calculate nonlinearity via permutations
 nonlinear.permutation = function(dat,
                                  permutation_number = 10,
-                                 data_proportion = 0.2){
+                                 data_proportion = 0.2,
+                                 counter = FALSE,
+                                 ...){
   
   #Generate list to save results into
   out = list()
   
+  #Print counter if verbose
+  if(counter == TRUE){
+    pb <- txtProgressBar(min = 1,
+                         max = permutation_number,
+                         style = 3,
+                         width = 50,
+                         char = ".")
+  }
+  
   #Loop through and calculate
-  for(i in 1:permutation_number ){
+  for(i in 1:permutation_number){
+    
+    
+    if(counter == TRUE){
+      setTxtProgressBar(pb, i)
+    }
     
     #Run compare_nonlinear
-    tmp = compare_nonlinear(dat[,sample(1:ncol(dat), round(ncol(dat)*data_proportion))], verbose = TRUE, return_models = TRUE)
+    tmp = compare_nonlinear(dat[,sample(1:ncol(dat), round(ncol(dat)*data_proportion))], ...)
     out[[i]] = tmp
   }
   
@@ -348,6 +385,7 @@ subsample.entropy = function(data,
   distributions = list()
   
   sample_sizes = round(sample_sizes*ncol(data))
+  sample_sizes = sample_sizes[sample_sizes>1]
   
   for(a in 1:length(sample_sizes)){
     
@@ -429,38 +467,51 @@ compute.phenotype.stats = function(data,
                                    run_nonlinear = FALSE,
                                    sample_sizes = seq(0.1, 0.9, 0.1),
                                    entropy_permutations = 10,
+                                   verbose = FALSE,
+                                   normalize_entropy = FALSE,
                                    ...){
   
 
   #Calculate overall entropy
-  print('Overall entropy')
+  if(verbose == TRUE){
+    print('Overall entropy')
+  }
   overall_entropy = overall.entropy(data)
     
   #Calculate mutual information'
-  print('Mutual information')
+  if(verbose == TRUE){
+    print('Mutual information')
+  }
   mutual_information = overall.mi(data)
   
   #Calculate subsampled entropy
-  print('Subsampled entropy')
+  if(verbose == TRUE){
+    print('Subsampled entropy')
+  }
   subsampled_entropy = lapply(data, function(x) subsample.entropy(x,
                                                                   permutations = entropy_permutations,
                                                                   sample_sizes = sample_sizes,
-                                                                  normalize_entropy = FALSE))
+                                                                  normalize_entropy = normalize_entropy))
   
   #Calculate slopes
-  print('Subsampled entropy slopes')
+  if(verbose == TRUE){
+    print('Subsampled entropy slopes')
+  }
   subsampled_entropy_slopes = entropy.slopes(subsampled_entropy)
   
   if(run_nonlinear == TRUE){
     #Compare non-linearity
-    print('Nonlinearity')
-    nonlinearity = lapply(data, function(x) compare_nonlinear(x, 
-                                                              return_models = TRUE, 
+    if(verbose == TRUE){
+      print('Nonlinearity')
+    }
+    nonlinearity = lapply(data, function(x) compare_nonlinear(x,
                                                               verbose = TRUE,
                                                               ...))
     
     #Calculate aic ratios
-    print('AIC ratios')
+    if(verbose == TRUE){
+      print('AIC ratios')
+    }
     aic_ratios = aic.ratios(nonlinearity)
     
     #Return everything

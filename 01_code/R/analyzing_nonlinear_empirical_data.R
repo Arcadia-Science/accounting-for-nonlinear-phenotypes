@@ -139,7 +139,11 @@ toTest = c(1, 3:length(phenos))
 nonlinear_permutations = list()
 for(i in toTest){
   print(paste(i, 'out of', length(phenos)))
-  nonlinear_permutations[[names(phenos)[i]]] = nonlinear.permutation(phenos[[i]], data_proportion = 0.25, permutation_number = 100)
+  if(i == 1){
+    nonlinear_permutations[[names(phenos)[i]]] = nonlinear.permutation(phenos[[i]][sample(1:nrow(phenos[[i]]), 1000),], data_proportion = 0.25, permutation_number = 100, counter = TRUE)
+  }else{
+    nonlinear_permutations[[names(phenos)[i]]] = nonlinear.permutation(phenos[[i]], data_proportion = 0.25, permutation_number = 100, counter = TRUE)
+  }
 }
 
 #Calculate random distribution
@@ -150,11 +154,17 @@ for(i in 1:20){
 dat = do.call(cbind, dat)
 
 #Calculate nonlinearity and entropy of random
-random = nonlinear.permutation(dat, data_proportion = 0.25, permutation_number = 100)
+random = nonlinear.permutation(dat, data_proportion = 0.25, permutation_number = 100, counter = TRUE)
 
 #Add
 nonlinear_permutations$random = random
 
+#Save
+saveRDS(nonlinear_permutations, '~/Documents/Research/github/accounting-for-nonlinear-phenotypes/02_output/empirical-phenotypes/empirical_datasets_permuted_nonlinearity_041823.RDS')
+
+#########################################
+#####Plot nonlinearity distributions#####
+#########################################
 #Plot
 nonlinear_permutations = nonlinear_permutations[order(unlist(lapply(nonlinear_permutations, function(x) mean(x))), decreasing = TRUE)]
 cols = c(arcadia.pal(n = 6, name = 'Accent'), 'gray50')
