@@ -15,11 +15,11 @@ All data needed to replicate these analyses are available via [Zenodo]([https://
 
 Data used to study empirical variation across sets of phenotypes are publicly available and associated with the following publications:
 
-*Arabidopsis thaliana*: [Exposito-Alonso et al. 2019](https://www.nature.com/articles/s41586-019-1520-9)
-*Saccharomyces cerevisiae*: [Bloom et al. 2019](https://elifesciences.org/articles/49212)
-*Caenorhabditis elegans*: [Snoek et al. 2019](https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-019-0642-8)
-*Mus musculus 1*: [Gonzales et al. 2018](https://www.nature.com/articles/s41467-018-07642-8)
-*Mus musculus 2*: [Bogue et al. 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4602074/)
-*Drosophila melanogaster*: [Mackay et al. 2012](https://www.nature.com/articles/nature10811)
+*Arabidopsis thaliana*: [Exposito-Alonso et al. 2019](https://www.nature.com/articles/s41586-019-1520-9)<br>
+*Saccharomyces cerevisiae*: [Bloom et al. 2019](https://elifesciences.org/articles/49212)<br>
+*Caenorhabditis elegans*: [Snoek et al. 2019](https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-019-0642-8)<br>
+*Mus musculus 1*: [Gonzales et al. 2018](https://www.nature.com/articles/s41467-018-07642-8)<br>
+*Mus musculus 2*: [Bogue et al. 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4602074/)<br>
+*Drosophila melanogaster*: [Mackay et al. 2012](https://www.nature.com/articles/nature10811)<br>
 
 More details on these datasets are available in the associated pub.
