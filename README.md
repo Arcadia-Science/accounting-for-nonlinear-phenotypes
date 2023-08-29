@@ -2,12 +2,12 @@
 
 This repository contains analysis code to accompany the publication 'Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'.<br>
 
-Notebooks containing expanded methods and the code + analyses for generating all figures in the publication can be found in `[01_code/notebooks/](01_code/notebooks/)`.<br>
+Notebooks containing expanded methods and the code + analyses for generating all figures in the publication can be found in [01_code/notebooks/](01_code/notebooks/).<br>
 
 ## Directory structure
 
-`[01_code/](01_code/)` Contains code for simulating phenotypes (Python), analyzing phenotypes (R/Jupyter Notebooks), and predicting phenotypes with an autoencoder (Python).<br>
-`[02_outputs/](02_outputs/)` Outputs associated with the pub.<br>
+[01_code/](01_code/) Contains code for simulating phenotypes (Python), analyzing phenotypes (R/Jupyter Notebooks), and predicting phenotypes with an autoencoder (Python).<br>
+[02_outputs/](02_outputs/) Outputs associated with the pub.<br>
 
 ## Data
 
