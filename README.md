@@ -1,18 +1,5 @@
 # Acccounting for nonlinear phenotypes
 
-## Purpose of this repository
-This repository contains code for exploring the role of nonlinear phenotypic interactions in genetic mapping studies. 
+This repository contains analysis code to accompany the publication 'Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'.<br>
 
-## Datasets explored
-Fruit flies: [DGRP](http://dgrp2.gnets.ncsu.edu/) <br>
-Mice: [JAX](https://www.jax.org/) <br>
-Humans: [UK biobank](https://www.ukbiobank.ac.uk/) (fingers crossed, awaiting approval)
-
-Available on [S3](https://s3.console.aws.amazon.com/s3/buckets/arcadia-public-genetic-mapping-datasets?region=us-west-1&tab=objects)
-
-## Structure of the repository
-TBD
-
-## Participants
-@dgmets <br>
-@ryanayork
+Notebooks containing expanded methods and the code + analyses for generating all figures in the publication can be found in [01_code/notebooks/](01_code/notebooks/) 
