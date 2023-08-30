@@ -1,4 +1,4 @@
-`# Acccounting for nonlinear phenotypes
+# Acccounting for nonlinear phenotypes
 
 This repository contains analysis code to accompany the publication 'Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'.<br>
 
