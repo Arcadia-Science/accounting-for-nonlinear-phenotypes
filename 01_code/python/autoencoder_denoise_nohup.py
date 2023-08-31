@@ -85,8 +85,6 @@ transform = transforms.ToTensor()
 
 # load the training and test datasets
 if vabs.dataset_path == None:
- #dataset_path = '/home/dmets/git/arcadia-genotype-phenotype-map-nn/data/n_3000_nlip_10/'
- #dataset_path = '/home/dmets/git/arcadia-genotype-phenotype-map-nn/data/n_3000_nlp_30/'
  dataset_path = '/home/dmets/git/accounting-for-nonlinear-phenotypes/02_output/ppleio_pint_sweep_no_noise_no_downsample/'
 
 else: dataset_path = vabs.dataset_path
@@ -99,7 +97,6 @@ test_data = phen_dataset(dataset_path+test_dat,n_phens=vabs.n_phens_to_analyze)
 
 # setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#print('Using device:', device)
 
 # how many samples per batch to load
 batch_size = vabs.batch_size
@@ -124,7 +121,6 @@ class Q_net(nn.Module):
    nn.BatchNorm1d(N,momentum=batchnorm_momentum),
    nn.LeakyReLU(0.01,inplace=True), 
    nn.Linear(in_features=N, out_features=latent_dim),
-   #nn.Sigmoid()
    nn.LeakyReLU(0.01,inplace=True)
   )
 
@@ -151,7 +147,6 @@ class P_net(nn.Module):
    nn.BatchNorm1d(N,momentum=batchnorm_momentum),
    nn.LeakyReLU(0.01), 
    nn.Linear(in_features=N, out_features=out_phen_dim),
-   #nn.Sigmoid()
    nn.LeakyReLU(0.01) 
   )
 
@@ -232,47 +227,16 @@ for dat in test_loader:
  phen_encodings+=list(X_sample.detach().cpu().numpy())
  phen_latent+=list(z_sample.detach().cpu().numpy())
  
-'''print(len(phen_latent))
-print(len(phen_latent[0]))
-print(phen_latent[0])
-
-print(len(phens))
-print(len(phens[0]))
-print(len(phen_encodings))
-print(len(phen_encodings[0]))'''
-
-
-#[plt.plot(x) for x in phen_latent[:10]]
-#plt.show()
 
 phens=np.array(phens).T
 phen_encodings=np.array(phen_encodings).T
 
 
-'''for n in range(len(phens[:n_phens_pred])):
- plt.plot(phens[n],phen_encodings[n],'o')
-plt.xlabel('real')
-plt.ylabel('predicted')
-plt.show()'''
-#plt.savefig(dataset_path+'phen_real_pred.svg')
-#plt.close()
-
 cors=[sc.stats.pearsonr(phens[n],phen_encodings[n])[0] for n in range(len(phens[:n_phens_pred]))]
-#print(cors)
-'''plt.hist(cors,bins=20)
-plt.show()'''
-#plt.savefig(dataset_path+'phen_real_pred_pearsonsr.svg')
-#plt.close()
 
 errs=[mean_squared_error(phens[n],phen_encodings[n]) for n in range(len(phens[:n_phens_pred]))]
-#print(errs)
-'''plt.hist(errs,bins=20)
-plt.show()'''
 
 errs=[mean_absolute_percentage_error(phens[n],phen_encodings[n]) for n in range(len(phens[:n_phens_pred]))]
-#print(errs)
-'''plt.hist(errs,bins=20)
-plt.show()'''
 
 #output
 dats = vabs.train_suffix.strip('.pk')
@@ -286,7 +250,6 @@ merrs = str(np.mean(errs))
 mcor = str(np.mean(cors))
 
 sep = '\t'
-tst=p_pleio +sep+ p_int +sep+ n_pred +sep+ n_ana +sep+ merrs +sep+ mcor +sep+ str(cors) +sep+ str(errs) 
-print(tst)
-#output=p_pleio +sep+ p_int +sep+ n_pred +sep+ n_ana +sep+ merrs +sep+ mcor +sep+ str(cors) +sep+ str(errs) 
-#print(output)
+output=p_pleio +sep+ p_int +sep+ n_pred +sep+ n_ana +sep+ merrs +sep+ mcor +sep+ str(cors) +sep+ str(errs) 
+print(output)
+
