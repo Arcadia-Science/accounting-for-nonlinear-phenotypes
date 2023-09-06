@@ -8,6 +8,7 @@ library(reticulate)
 library(ArcadiaColorBrewer)
 library(entropy)
 library(vioplot)
+library(RNOmni)
 np <- import("numpy")
 pd <- import("pandas")
 
