@@ -34,6 +34,7 @@ More details on these datasets are available in the associated pub.
 `mgcv v1.8-41` <br/>
 `missMDA v1.18` <br/>
 `RColorBrewer v1.1-3` <br/>
+`RNOmni v1.0.1` <br/>
 `reticulate v1.27` <br/>
 `scales v1.2.1` <br/>
 `vioplot v0.4.0` <br/>
