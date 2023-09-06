@@ -25,6 +25,8 @@ Data used to study empirical variation across sets of phenotypes are publicly av
 More details on these datasets are available in the associated pub.
 
 ## Packages used in this repo
+
+### R
 `ArcadiaColorBrewer v0.0.0.9000` <br/>
 `entropy v1.3.1` <br/>
 `gplots v3.1.3` <br/>
