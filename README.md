@@ -11,7 +11,7 @@ Notebooks containing expanded methods and the code + analyses for generating all
 
 ## Data
 
-All data needed to replicate these analyses are available via [Zenodo]([https://docs.conda.io/en/latest/miniconda.html](https://zenodo.org/record/8298808)).<br>
+All data needed to replicate these analyses are available via [Zenodo](https://zenodo.org/record/8298808).<br>
 
 Data used to study empirical variation across sets of phenotypes are publicly available and associated with the following publications:
 
