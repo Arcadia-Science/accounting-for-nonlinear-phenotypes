@@ -30,6 +30,7 @@ More details on these datasets are available in the associated pub.
 `ArcadiaColorBrewer v0.0.0.9000` <br/>
 `entropy v1.3.1` <br/>
 `gplots v3.1.3` <br/>
+`inborutils v0.3.0` <br/>
 `lmtest v0.9-40` <br/>
 `mgcv v1.8-41` <br/>
 `missMDA v1.18` <br/>
