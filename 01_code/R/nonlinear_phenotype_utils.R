@@ -9,6 +9,7 @@ library(ArcadiaColorBrewer)
 library(entropy)
 library(vioplot)
 library(RNOmni)
+library(inborutils)
 np <- import("numpy")
 pd <- import("pandas")
 
