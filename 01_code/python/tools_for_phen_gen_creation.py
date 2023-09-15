@@ -15,17 +15,26 @@ def make_genotype(
     p_pleio=None,
     noise=None,
     downsample=None,
-    n_loci_to_use=None,
 ):
     """a simple tool for generating phenotypic and genetic data.  Currently, this
     allows for the addition of non-linear gene-gene interactions, but the model is limited.
     An allele of a gene can only interact with one other allele of another gene. This now
     allows for pleiotropy.  For any individual gene known to influence a phenotype, there is a
     p_pleio probability that it will also influence any other individual phenotype.  The degree
-    of influence is set by p_pleio.
+    of influence is set by p_pleio. Creates a training output with n_animals number of animals and a 
+    testing output with 0.2*n_animals number of animals."""
+
     n_as is the number of allelic states at all segregating loci
     n_loci is the number of segregating loci in the analysis
-    n_loci_ip is the number of loci influencing the phenotype"""
+    n_loci_ip is the number of loci influencing the phenotype
+    n_env is the number of differing environmental influences on a phenotype
+    n_animals is the number of animals to be simulated
+    n_phens is the number of phenotypes to be simulated
+    env_weight is the strength of environmental influence on the phenotype
+    p_interact is the probability of interaction between two loci
+    p_pleio is the probability of pleiotoropy between a locus-phenotype pair
+    noise is the amount of noise added
+    """
 
     if n_as == None:
         n_as = 3
@@ -49,8 +58,6 @@ def make_genotype(
         noise = 0.01
     if downsample == None:
         downsample = False
-    if n_loci_to_use == None:
-        n_loci_to_use = n_loci_ip
 
     # make a dictionary for output and add all metadata
     out_dct = {}
@@ -65,7 +72,6 @@ def make_genotype(
     out_dct["env_weight"] = env_weight
     out_dct["noise"] = noise
     out_dct["downsample"] = downsample
-    out_dct["n_loci_to_use"] = n_loci_to_use
 
     # set up n_animals for test and train data sets
     n_animals_train = n_animals
@@ -207,6 +213,7 @@ def make_genotype_ind(n_as, n_loci):
 
 
 def p_i_sweep(outpath):
+    """utility function that creates a 2d sweep through probability of peleiotropy and probability of interaction"""
     incr = np.array(range(0, 11, 1)) / 10
     for i in incr:
         for f in incr:
