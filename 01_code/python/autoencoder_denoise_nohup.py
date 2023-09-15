@@ -108,8 +108,8 @@ vabs = args.parse_args()
 
 
 # define a torch dataset object
-class phen_dataset(Dataset):
-    """a class for importing simulated genotype-phenotype data.
+class PhenDataset(Dataset):
+    """a class for importing simulated phenotype data.
     It expects a pickled object that is organized as a list of tensors:
     genotypes[n_animals, n_loci, n_alleles] (one hot at allelic state)
     gen_locs[n_animals, n_loci] (index of allelic state)
@@ -176,7 +176,7 @@ data_iter = iter(train_loader)
 
 
 # encoder
-class Q_net(nn.Module):
+class QNet(nn.Module):
     def __init__(self, phen_dim=None, N=None):
         super(Q_net, self).__init__()
         if N == None:
@@ -200,7 +200,7 @@ class Q_net(nn.Module):
 
 
 # decoder
-class P_net(nn.Module):
+class PNet(nn.Module):
     def __init__(self, phen_dim=None, N=None):
         if N == None:
             N = vabs.d_hidden_dim
@@ -230,8 +230,8 @@ class P_net(nn.Module):
 
 # main
 EPS = 1e-15
-Q = Q_net()
-P = P_net()
+Q = QNet()
+P = PNet()
 
 # put everything on the GPU if it is there
 Q.to(device)

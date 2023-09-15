@@ -83,11 +83,6 @@ def make_genotype(
             ind = int(np.random.randint(n_loci))
             weights[m][ind] = np.random.rand(n_as) * 10
             inds[m][n] = int(ind)
-    # inds=[list(set(x)) for x in inds] #remove redundancy from indices
-
-    # make indices for locations in the genome that influence a phenotype this is a slopy way of
-    # getting info from the previous simulator...
-    # inds=[[n for n in range(len(weights[0])) if sum(weights[y][n])>0] for y in range(n_phens)]
 
     # add pleiotropy.  For each locus where there is influence on any one phenotype, this
     # will add an influence on each other phenotype with probability p_pleio.
@@ -160,13 +155,6 @@ def make_genotype(
 
     # add environmental effects
     env_phens = copy.deepcopy(phens)
-    """env_vects=np.random.rand(n_phens,n_env,n_animals)
- for n in range(n_phens):
-  for m in range(n_env):
-   phen_vect=copy.deepcopy(phens[n])
-   env_vect=env_vects[n][m]
-   out_phen=env_vect*(np.mean(phen_vect)/np.mean(env_vect))*env_weight #because this is done iteratively, this results in the first environmental variable having a lower contribution to the total variance than the last environmental variable
-   env_phens[n]=out_phen"""
 
     # add noise
     noise_vects = np.random.rand(n_phens, n_animals)
