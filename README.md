@@ -11,7 +11,7 @@ Notebooks containing expanded methods and the code + analyses for generating all
 
 ## Data
 
-All data needed to replicate these analyses are available via [Zenodo]([https://docs.conda.io/en/latest/miniconda.html](https://zenodo.org/record/8298808)).<br>
+All data needed to replicate these analyses are available via [Zenodo](https://zenodo.org/record/8298808).<br>
 
 Data used to study empirical variation across sets of phenotypes are publicly available and associated with the following publications:
 
@@ -23,3 +23,19 @@ Data used to study empirical variation across sets of phenotypes are publicly av
 *Drosophila melanogaster*: [Mackay et al. 2012](https://www.nature.com/articles/nature10811)<br>
 
 More details on these datasets are available in the associated pub.
+
+## Packages used in this repo
+
+### R
+`ArcadiaColorBrewer v0.0.0.9000` <br/>
+`entropy v1.3.1` <br/>
+`gplots v3.1.3` <br/>
+`inborutils v0.3.0` <br/>
+`lmtest v0.9-40` <br/>
+`mgcv v1.8-41` <br/>
+`missMDA v1.18` <br/>
+`RColorBrewer v1.1-3` <br/>
+`RNOmni v1.0.1` <br/>
+`reticulate v1.27` <br/>
+`scales v1.2.1` <br/>
+`vioplot v0.4.0` <br/>
