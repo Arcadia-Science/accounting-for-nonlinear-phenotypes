@@ -284,6 +284,7 @@ for n in range(num_epochs):
     cur_time = tm.time() - start_time
     start_time = tm.time()
 
+#test
 phen_encodings = []
 phens = []
 phen_latent = []
@@ -302,7 +303,7 @@ for dat in test_loader:
 phens = np.array(phens).T
 phen_encodings = np.array(phen_encodings).T
 
-
+#calculate stats
 cors = [
     sc.stats.pearsonr(phens[n], phen_encodings[n])[0]
     for n in range(len(phens[:n_phens_pred]))
