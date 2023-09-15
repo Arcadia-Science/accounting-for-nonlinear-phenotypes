@@ -3,7 +3,6 @@ import math
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 import numpy as np
 from torch.autograd import Variable
@@ -122,8 +121,6 @@ class phen_dataset(Dataset):
 
     def __init__(self, data_file, n_phens):
         self.datset = pk.load(open(data_file, "rb"))
-        # self.phens = [list((x/(1.5*max(x)))+1e-15) for x in self.datset['noisy_phens']]
-        # self.phens = torch.sigmoid(torch.tensor(self.datset['noisy_phens']))
         self.phens = self.datset["noisy_phens"]
         self.genotypes = self.datset["genotypes"]
         self.weights = self.datset["weights"]
