@@ -22,7 +22,7 @@ def make_genotype(
     allows for pleiotropy.  For any individual gene known to influence a phenotype, there is a
     p_pleio probability that it will also influence any other individual phenotype.  The degree
     of influence is set by p_pleio. Creates a training output with n_animals number of animals and a 
-    testing output with 0.2*n_animals number of animals."""
+    testing output with 0.2*n_animals number of animals.
 
     n_as is the number of allelic states at all segregating loci
     n_loci is the number of segregating loci in the analysis
