@@ -37,6 +37,8 @@ This is a script for parallelizing and running the autoencoder_denoise_nohup.py 
 ## Packages used by these scripts
 ### Python
 `packages that are part of the python standard library are not listed` <br>
+`CUDA is only required if a GPU is used` <br>
+<br>
 `argparse 1.1` <br>
 `CUDA 11.7` <br>
 `numpy 1.21.5` <br>
