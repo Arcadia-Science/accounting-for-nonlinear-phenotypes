@@ -6,7 +6,7 @@ This directory contains code for simulating phenotypes (tools_for_phen_gen_creat
 
 ## Usage <br>
 ### [tools_for_phen_gen_creation.py] (/accounting-for-nonlinear-phenotypes/01_code/python/tools_for_phen_gen_creation.py)
-[tools_for_phen_gen_creation.py] (/tools_for_phen_gen_creation.py)
+[tools_for_phen_gen_creation.py] (./tools_for_phen_gen_creation.py)
 This is a script containing a series of functions for simulating phenotypic and genetic data. It is intended to be loaded as a module into an interpreter or called from another script.
 
 For example, you might wright a script to simulate a population with 10,000 individuals, 100 phenotypes, 2,000 total genetic loci, 100 loci influencing any individual phenotype and the rest of the parameters set to default.
