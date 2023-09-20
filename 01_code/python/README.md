@@ -5,15 +5,15 @@ This repository contains analysis code to accompany the publication 'Harnessing 
 This directory contains code for simulating phenotypes (tools_for_phen_gen_creation.py) and predicting phenotypes with an autoencoder (autoencoder_denoise_nohup.py and batch_runner.py).
 
 ## Usage <br>
-## [tools_for_phen_gen_creation.py] (/accounting-for-nonlinear-phenotypes/01_code/python/tools_for_phen_gen_creation.py)
+### [tools_for_phen_gen_creation.py] (/accounting-for-nonlinear-phenotypes/01_code/python/tools_for_phen_gen_creation.py)
 This is a script containing a series of functions for simulating phenotypic and genetic data. It is intended to be loaded as a module into an interpreter or called from another script.
 
-## autoencoder_denoise_nohup.py
+### autoencoder_denoise_nohup.py
 This is a script containing a denoising autoencoder for predicting phenotypes from phenotypes. It expects to be pointed to a folder containing 2 files formatting in the following way test_[SUFFIX].pk train_[SUFFIX].pk. These files should contain genetic and phenotypic data organized in the format that is created by the tools_for_phen_gen_creation.py functions.
 It can be run at the command line as follows:
 python3 autoencoder_denoise_nohup.py --dataset_path [path to data folder]
 
-## batch_runner.py
+### batch_runner.py
 This is a script for parallelizing and running the autoencoder_denoise_nohup.py script. It is the script that was used to create the 30->5, 20->5, 10->5, and 5->5 phenotype predictions that are presented in the pub. <br>
 
 
