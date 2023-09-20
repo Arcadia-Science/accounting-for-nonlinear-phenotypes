@@ -12,14 +12,14 @@ This is a script containing a series of functions for simulating phenotypic and 
 For example, you might wright a script to simulate a population with 10,000 individuals, 100 phenotypes, 2,000 total genetic loci, 100 loci influencing any individual phenotype and the rest of the parameters set to default.
 You could write a script called "my_simulation.py" containing the following text: <br>
 
-'''
+```
 import tools_for_phen_gen_creation.py
 
 train_data, test_data = make_genotype(n_animals = 10000, n_phens = 100, n_loci = 2000, n_loci_ip = 100)
 
 pk.dump(train_data, open('training_data.pk', 'rb'))
 pk.dump(test_data, open('test_data.pk', 'rb'))
-'''
+```
 
 ### [autoencoder_denoise_nohup.py]
 
