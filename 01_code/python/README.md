@@ -5,7 +5,7 @@ This repository contains analysis code to accompany the publication 'Harnessing 
 This directory contains code for simulating phenotypes (tools_for_phen_gen_creation.py) and predicting phenotypes with an autoencoder (autoencoder_denoise_nohup.py and batch_runner.py).
 
 ##Usage
-#tools_for_phen_gen_creation.py
+#tools_for_phen_gen_creation.py (/accounting-for-nonlinear-phenotypes/01_code/python/tools_for_phen_gen_creation.py)
 This is a script containing a series of functions for simulating phenotypic and genetic data. It is intended to be loaded as a module into an interpreter or called from another script.
 
 #autoencoder_denoise_nohup.py
