@@ -31,7 +31,11 @@ python3 autoencoder_denoise_nohup.py --dataset_path [path to data folder]
 
 ### [batch_runner.py](batch_runner.py)
 This is a script for parallelizing and running the autoencoder_denoise_nohup.py script. It is the script that was used to create the 30->5, 20->5, 10->5, and 5->5 phenotype predictions that are presented in the pub. <br>
+It can be run at the command line as follows:<br>
 
+```
+python3 batch_runner.py [path_to_directory_containing_test_and_train_data]
+```
 
 ## Packages used by these scripts
 ### Python
