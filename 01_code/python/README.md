@@ -24,7 +24,7 @@ pk.dump(test_data, open('test_data.pk', 'rb'))
 ### [autoencoder_denoise_nohup.py]
 
 This is a script containing a denoising autoencoder for predicting phenotypes from phenotypes. It expects to be pointed to a folder containing 2 files formatting in the following way test_[SUFFIX].pk train_[SUFFIX].pk. These files should contain genetic and phenotypic data organized in the format that is created by the tools_for_phen_gen_creation.py functions.
-It can be run at the command line as follows:
+It can be run at the command line as follows:<br>
 ```python3 autoencoder_denoise_nohup.py --dataset_path [path to data folder]```
 
 ### batch_runner.py
