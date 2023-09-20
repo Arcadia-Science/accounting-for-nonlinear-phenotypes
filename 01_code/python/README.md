@@ -45,6 +45,11 @@ This is a script for parallelizing and running the autoencoder_denoise_nohup.py 
 
 ## System
 This code has been tested on 2 systems: <br>
-`Operating system: Ubuntu 22.04.3 LTS <br>`
-`CPU: i7-1260P <br>`
-`Memory: 32 Gb <br>`
+`Operating system: Ubuntu 22.04.3 LTS`
+`CPU: i7-1260P`
+`Memory: 32 Gb` <br>
+`Operating system: Ubuntu 22.04.3 LTS`
+`CPU: AMD Ryzen 9 5950X`
+`Memory: 128 Gb`
+`GPU: GeForce RTX 3070` <br>
+
