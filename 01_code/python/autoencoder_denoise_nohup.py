@@ -12,7 +12,6 @@ import pickle as pk
 import time as tm
 import scipy as sc
 from scipy import stats
-from sklearn.metrics import mean_squared_error
 
 
 # parse commandline arguments
@@ -306,11 +305,6 @@ phen_encodings = np.array(phen_encodings).T
 #calculate stats
 cors = [
     sc.stats.pearsonr(phens[n], phen_encodings[n])[0]
-    for n in range(len(phens[:n_phens_pred]))
-]
-
-errs = [
-    mean_squared_error(phens[n], phen_encodings[n])
     for n in range(len(phens[:n_phens_pred]))
 ]
 

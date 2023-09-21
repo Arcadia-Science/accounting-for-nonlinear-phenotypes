@@ -1,7 +1,5 @@
 # Acccounting for nonlinear phenotypes
 
-This repository contains analysis code to accompany the publication 'Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'.<br>
-
 This directory contains code for simulating phenotypes (tools_for_phen_gen_creation.py) and predicting phenotypes with an autoencoder (autoencoder_denoise_nohup.py and batch_runner.py).
 
 ## Usage <br>
@@ -21,7 +19,7 @@ For example, you might wright a script to simulate a population with 10,000 indi
 You could write a script called "my_simulation.py" containing the following text: <br>
 
 ```
-import tools_for_phen_gen_creation.py
+import tools_for_phen_gen_creation
 
 train_data, test_data = make_genotype(n_animals = 10000, n_phens = 100, n_loci = 2000, n_loci_ip = 100)
 
@@ -37,6 +35,9 @@ It can be run at the command line as follows:<br>
 ```
 python3 autoencoder_denoise_nohup.py --dataset_path [path to data folder]
 ```
+
+The output is a single tab separated line organized as follows:
+[probability of pleiotropy] [probability of interaction] [number of phenotypes predicted] [number of phenotypes analyzed] [mean absolute percentage error averaged across phenotypes] [pearsons r correlation between real phenotypes and predicted phenotypes averaged across phenotypes] [individual pearsons r for all phenotypes] [individual MAPE for all phenotypes]
 
 ### [batch_runner.py](batch_runner.py)
 This is a script for parallelizing and running the autoencoder_denoise_nohup.py script. It is the script that was used to create the 30->5, 20->5, 10->5, and 5->5 phenotype predictions that are presented in the pub. <br>
