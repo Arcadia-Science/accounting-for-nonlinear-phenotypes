@@ -5,6 +5,15 @@ This repository contains analysis code to accompany the publication 'Harnessing 
 This directory contains code for simulating phenotypes (tools_for_phen_gen_creation.py) and predicting phenotypes with an autoencoder (autoencoder_denoise_nohup.py and batch_runner.py).
 
 ## Usage <br>
+### Installing required packages
+The version of python3 used is 3.10.12.  Be sure python3 is installed. <br>
+The version of PIP3 used is 22.0.2.  Be sure PIP3 is installed. <br>
+Then, at the command line type:
+
+```
+pip install -r requirements.txt
+```
+
 ### [tools_for_phen_gen_creation.py](tools_for_phen_gen_creation.py)
 This is a script containing a series of functions for simulating phenotypic and genetic data. It is intended to be loaded as a module into an interpreter or called from another script.
 
@@ -42,14 +51,14 @@ python3 batch_runner.py [path_to_directory_containing_test_and_train_data]
 `packages that are part of the python standard library are not listed` <br>
 `CUDA is only required if a GPU is used` <br>
 <br>
-`argparse 1.1` <br>
-`CUDA 11.7` <br>
+`CUDA 11.7 NOTE: unnecessary if the system does not have a GPU` <br>
 `numpy 1.21.5` <br>
 `Python 3.10.12` <br>
+`pip3 22.0.2` <br>
 `scipy 1.8.0` <br>
 `sklearn 1.3.0` <br>
-`torch 1.13.0` <br>
-`torchvision 0.14.0` <br>
+`torch 1.13.0+cpu` <br>
+`torchvision 0.14.0+cpu` <br>
 
 ## System
 This code has been tested on 2 systems: <br>
@@ -61,3 +70,4 @@ This code has been tested on 2 systems: <br>
 `Memory: 128 Gb`
 `GPU: GeForce RTX 3070` <br>
 
+NOTE: A GPU is unncecessary to run this code.  A GPU provides an acelleration that is the difference between minutes and hours.
