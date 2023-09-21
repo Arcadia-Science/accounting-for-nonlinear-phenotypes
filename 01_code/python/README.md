@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ### [tools_for_phen_gen_creation.py](tools_for_phen_gen_creation.py)
 This is a script containing a series of functions for simulating phenotypic and genetic data. It is intended to be loaded as a module into an interpreter or called from another script.
 
-For example, you might wright a script to simulate a population with 10,000 individuals, 100 phenotypes, 2,000 total genetic loci, 100 loci influencing any individual phenotype and the rest of the parameters set to default.
+For example, you might write a script to simulate a population with 10,000 individuals, 100 phenotypes, 2,000 total genetic loci, 100 loci influencing any individual phenotype and the rest of the parameters set to default.
 You could write a script called "my_simulation.py" containing the following text: <br>
 
 ```
@@ -29,7 +29,7 @@ pk.dump(test_data, open('test_data.pk', 'rb'))
 
 ### [autoencoder_denoise_nohup.py](autoencoder_denoise_nohup.py)
 
-This is a script containing a denoising autoencoder for predicting phenotypes from phenotypes. It expects to be pointed to a folder containing 2 files formatting in the following way test_[SUFFIX].pk train_[SUFFIX].pk. These files should contain genetic and phenotypic data organized in the format that is created by the tools_for_phen_gen_creation.py functions.
+This is a script containing a denoising autoencoder for predicting phenotypes from phenotypes. It expects to be pointed to a folder containing 2 files formatted in the following way test_[SUFFIX].pk train_[SUFFIX].pk. These files should contain genetic and phenotypic data organized in the format that is created by the tools_for_phen_gen_creation.py functions.
 It can be run at the command line as follows:<br>
 
 ```
@@ -71,4 +71,4 @@ This code has been tested on 2 systems: <br>
 `Memory: 128 Gb`
 `GPU: GeForce RTX 3070` <br>
 
-NOTE: A GPU is unncecessary to run this code.  A GPU provides an acelleration that is the difference between minutes and hours.
+NOTE: A GPU is unncecessary to run this code.  A GPU provides an acceleration that is the difference between minutes and hours.
