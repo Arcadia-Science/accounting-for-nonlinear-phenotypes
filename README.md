@@ -12,7 +12,6 @@ Notebooks containing expanded methods and the code + analyses for generating all
 ## Directory structure
 
 [01_code/](01_code/) Contains code for [simulating phenotypes](01_code/python), [analyzing phenotypes](01_code/notebooks/), and [predicting phenotypes with an autoencoder](01_code/python).<br>
-[02_outputs/](02_outputs/) Outputs associated with the pub.<br>
 
 ## Data
 
@@ -27,7 +26,7 @@ Data used to study empirical variation across sets of phenotypes are publicly av
 *Mus musculus 2*: [Bogue et al. 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4602074/)<br>
 *Drosophila melanogaster*: [Mackay et al. 2012](https://www.nature.com/articles/nature10811)<br>
 
-More details on these datasets are available in the associated pub.
+More details on these datasets are available in the associated [pub](doi.org/10.57844/arcadia-5953-995f).
 
 ## Packages used in this repo
 
