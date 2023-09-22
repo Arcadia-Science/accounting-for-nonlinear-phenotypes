@@ -1,12 +1,15 @@
 # Acccounting for nonlinear phenotypes
 
-This repository contains analysis code to accompany the publication ['Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'](10.57844/arcadia-5953-995f).<br>
+## Context
+This repository contains analysis code to accompany the publication ['Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'](doi.org/10.57844/arcadia-5953-995f).<br>
+
+A core focus of genetics is understanding the relationship between genetic variation (genotypes) and biological traits (phenotypes). Many popular models assume that the effects of genotypes on phenotypes are additive and linear. However, non-additive relationships between genes are well known — one gene can influence the effects of another (epistasis), and some genes have multiple phenotypic effects (pleiotropy). By accounting for such nonlinear interactions between genes and phenotypes, we show that we are able to accurately predict suites of simulated phenotypes. These findings should be of interest to anyone whose work relies on more accurately modeling genotype-phenotype relationships, especially those in the fields of quantitative, population, and human genetics.
 
 Notebooks containing expanded methods and the code + analyses for generating all figures in the publication can be found in [01_code/notebooks/](01_code/notebooks/).<br>
 
 ## Directory structure
 
-[01_code/](01_code/) Contains code for simulating phenotypes (Python), analyzing phenotypes (R/Jupyter Notebooks), and predicting phenotypes with an autoencoder (Python).<br>
+[01_code/](01_code/) Contains code for [simulating phenotypes](01_code/python), [analyzing phenotypes](01_code/notebooks/), and [predicting phenotypes with an autoencoder](01_code/python).<br>
 [02_outputs/](02_outputs/) Outputs associated with the pub.<br>
 
 ## Data
