@@ -1,7 +1,7 @@
 # Acccounting for nonlinear phenotypes
 
 ## Context
-This repository contains analysis code to accompany the publication ['Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'](doi.org/10.57844/arcadia-5953-995f).<br>
+This repository contains analysis code to accompany the publication ['Harnessing genotype-phenotype nonlinearity to accelerate biological prediction'](https://doi.org/10.57844/arcadia-5953-995f).<br>
 
 A core focus of genetics is understanding the relationship between genetic variation (genotypes) and biological traits (phenotypes). Many popular models assume that the effects of genotypes on phenotypes are additive and linear. However, non-additive relationships between genes are well known — one gene can influence the effects of another (epistasis), and some genes have multiple phenotypic effects (pleiotropy). 
 
@@ -26,7 +26,7 @@ Data used to study empirical variation across sets of phenotypes are publicly av
 *Mus musculus 2*: [Bogue et al. 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4602074/)<br>
 *Drosophila melanogaster*: [Mackay et al. 2012](https://www.nature.com/articles/nature10811)<br>
 
-More details on these datasets are available in the associated [pub](doi.org/10.57844/arcadia-5953-995f).
+More details on these datasets are available in the associated [pub](https://doi.org/10.57844/arcadia-5953-995f).
 
 ## Packages used in this repo
 
