@@ -9,6 +9,8 @@ By accounting for such nonlinear interactions between genes and phenotypes, we s
 
 Notebooks containing expanded methods and the code + analyses for generating all figures in the publication can be found in [01_code/notebooks/](01_code/notebooks/).<br>
 
+The notebooks are meant to be run in order. **Notebook 1** downloads and organizes the data from Zenodo, and **Notebooks 2** and **3** rely on that downloaded data. Run **Notebook 1** first (or at least execute its data-download code) before running **Notebook 2** or **Notebook 3**.<br>
+
 ## Directory structure
 
 [01_code/](01_code/) Contains code for [simulating phenotypes](01_code/python), [analyzing phenotypes](01_code/notebooks/), and [predicting phenotypes with an autoencoder](01_code/python).<br>
@@ -35,15 +37,26 @@ More details on these datasets are available in the associated [pub](https://doi
 `ArcadiaColorBrewer v0.0.0.9000` <br/>
 `entropy v1.3.1` <br/>
 `gplots v3.1.3` <br/>
+`here v1.0.1` <br/>
 `inborutils v0.3.0` <br/>
+`infotheo v1.2.0.1` <br/>
 `lmtest v0.9-40` <br/>
 `mgcv v1.8-41` <br/>
 `missMDA v1.18` <br/>
+`plotrix v3.8-2` <br/>
 `RColorBrewer v1.1-3` <br/>
 `RNOmni v1.0.1` <br/>
 `reticulate v1.27` <br/>
 `scales v1.2.1` <br/>
 `vioplot v0.4.0` <br/>
+
+`ArcadiaColorBrewer` is a development package that is not on CRAN. Install it from GitHub with:
+
+```r
+remotes::install_github("Arcadia-Science/ArcadiaColorBrewer")
+```
+
+The analyses also use the Python `numpy` and `pandas` libraries via `reticulate`. Make sure both are installed in the Python environment that `reticulate` points to (e.g. `pip install numpy pandas`), and set `RETICULATE_PYTHON` or call `reticulate::use_python()` to select that environment before sourcing the R utilities.
 
 ## Feedback, contributions, and reuse
 

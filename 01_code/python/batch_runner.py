@@ -3,14 +3,15 @@ import sys as sys
 from multiprocessing import Pool
 
 '''This is a script to run the denoising autoencoder on a set of inputs and outputs.
- This script can be run by providing a 'taret folder' containing a 'test' and a 'train' data set.
- By default that target folder is:
- /home/dmets/git/accounting-for-nonlinear-phenotypes/02_output/ppleio_pint_sweep_no_noise_no_downsample/
+ This script must be run by providing a 'target folder' containing a 'test' and a 'train' data set as the first command line argument.
  For the pub, the ppleio_pint_sweep_no_noise_no_downsample/ folder contains the primary data. This data is at https://zenodo.org/record/8298808'''
 
 if len(sys.argv)<2:
- target_folder = "/home/dmets/git/accounting-for-nonlinear-phenotypes/02_output/ppleio_pint_sweep_no_noise_no_downsample/"
-else: 
+ raise SystemExit(
+     "Usage: python3 batch_runner.py [path_to_directory_containing_test_and_train_data]\n"
+     "The primary data are available at https://zenodo.org/record/8298808"
+ )
+else:
  target_folder = sys.argv[1]
 
 roots = os.listdir(
