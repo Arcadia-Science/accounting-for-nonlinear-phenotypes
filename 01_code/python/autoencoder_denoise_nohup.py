@@ -146,7 +146,12 @@ transform = transforms.ToTensor()
 
 # load the training and test datasets
 if vabs.dataset_path == None:
-    dataset_path = "/home/dmets/git/accounting-for-nonlinear-phenotypes/02_output/ppleio_pint_sweep_no_noise_no_downsample/"
+    raise ValueError(
+        "No --dataset_path provided. Pass the folder containing the train and "
+        "test data files, e.g. "
+        "`python3 autoencoder_denoise_nohup.py --dataset_path [path to data folder]`. "
+        "The primary data are available at https://zenodo.org/record/8298808"
+    )
 
 else:
     dataset_path = vabs.dataset_path
@@ -154,8 +159,8 @@ else:
 train_dat = vabs.train_suffix
 test_dat = vabs.test_suffix
 
-train_data = phen_dataset(dataset_path + train_dat, n_phens=vabs.n_phens_to_analyze)
-test_data = phen_dataset(dataset_path + test_dat, n_phens=vabs.n_phens_to_analyze)
+train_data = PhenDataset(dataset_path + train_dat, n_phens=vabs.n_phens_to_analyze)
+test_data = PhenDataset(dataset_path + test_dat, n_phens=vabs.n_phens_to_analyze)
 
 # setting device on GPU if available, else CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -177,7 +182,7 @@ data_iter = iter(train_loader)
 # encoder
 class QNet(nn.Module):
     def __init__(self, phen_dim=None, N=None):
-        super(Q_net, self).__init__()
+        super(QNet, self).__init__()
         if N == None:
             N = vabs.e_hidden_dim
         if phen_dim == None:
@@ -213,7 +218,7 @@ class PNet(nn.Module):
 
         batchnorm_momentum = vabs.batchnorm_momentum
 
-        super(P_net, self).__init__()
+        super(PNet, self).__init__()
         self.decoder = nn.Sequential(
             nn.Linear(in_features=latent_dim, out_features=N),
             nn.BatchNorm1d(N, momentum=batchnorm_momentum),

@@ -23,8 +23,8 @@ import tools_for_phen_gen_creation
 
 train_data, test_data = make_genotype(n_animals = 10000, n_phens = 100, n_loci = 2000, n_loci_ip = 100)
 
-pk.dump(train_data, open('training_data.pk', 'rb'))
-pk.dump(test_data, open('test_data.pk', 'rb'))
+pk.dump(train_data, open('training_data.pk', 'wb'))
+pk.dump(test_data, open('test_data.pk', 'wb'))
 ```
 
 ### [autoencoder_denoise_nohup.py](autoencoder_denoise_nohup.py)
@@ -58,8 +58,8 @@ python3 batch_runner.py [path_to_directory_containing_test_and_train_data]
 `pip3 22.0.2` <br>
 `scipy 1.8.0` <br>
 `sklearn 1.3.0` <br>
-`torch 1.13.0+cpu` <br>
-`torchvision 0.14.0+cpu` <br>
+`torch 1.12.1+cpu` <br>
+`torchvision 0.13.1+cpu` <br>
 
 ## System
 This code has been tested on 2 systems: <br>
